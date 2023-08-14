@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:house_of_tomorrow/src/service/cart_service.dart';
+import 'package:house_of_tomorrow/src/service/theme_service.dart';
+import 'package:house_of_tomorrow/src/view/cart/cart_delete_dialog.dart';
 import 'package:house_of_tomorrow/src/view/cart/widget/cart_bottom_sheet.dart';
 import 'package:house_of_tomorrow/src/view/cart/widget/cart_empty.dart';
 import 'package:house_of_tomorrow/src/view/cart/widget/cart_item_tile.dart';
+import 'package:house_of_tomorrow/theme/component/button/button.dart';
 import 'package:house_of_tomorrow/theme/component/pop_button.dart';
 import 'package:house_of_tomorrow/util/helper/intl_helper.dart';
 import 'package:house_of_tomorrow/util/lang/generated/l10n.dart';
@@ -16,12 +19,34 @@ class CartView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cart = ref.watch(cartServiceProvider);
+    final theme = ref.watch(themeServiceProvider);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(S.current.cart),
         leading: const PopButton(),
         titleSpacing: 0,
+        actions: [
+          Button(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return CartDeleteDialog(
+                    onDeletePressed: () {
+                      ref.read(cartServiceProvider.notifier).delete(
+                          cart.where((element) => element.isSelected).toList());
+                    },
+                  );
+                },
+              );
+            },
+            text: S.current.delete,
+            type: ButtonType.flat,
+            color: theme.color.secondary,
+            isInactive: cart.isEmpty,
+          ),
+        ],
       ),
       body: Column(
         children: [
