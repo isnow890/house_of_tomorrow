@@ -6,9 +6,11 @@ import 'package:house_of_tomorrow/src/service/cart_service.dart';
 import 'package:house_of_tomorrow/src/view/product/widget/product_bottom_sheet.dart';
 import 'package:house_of_tomorrow/src/view/product/widget/product_color_preview.dart';
 import 'package:house_of_tomorrow/src/view/product/widget/product_desc.dart';
+import 'package:house_of_tomorrow/src/view/product/widget/product_layout.dart';
 import 'package:house_of_tomorrow/theme/component/cart_button.dart';
 import 'package:house_of_tomorrow/theme/component/color_picker.dart';
 import 'package:house_of_tomorrow/theme/component/pop_button.dart';
+import 'package:house_of_tomorrow/theme/component/toast/toast.dart';
 import 'package:house_of_tomorrow/util/lang/generated/l10n.dart';
 
 class ProductView extends ConsumerStatefulWidget {
@@ -56,8 +58,8 @@ class _ProductViewState extends ConsumerState<ProductView> {
       product: widget.product,
     );
     cartService.add(newCartItem);
+    Toast.show(S.current.productAdded(widget.product.name));
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -72,35 +74,31 @@ class _ProductViewState extends ConsumerState<ProductView> {
           CartButton(),
         ],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(vertical: 32),
-              child: Wrap(
-                runSpacing: 32,
-                alignment: WrapAlignment.center,
-                children: [
-                  ProductColorPreview(
-                      colorIndex: colorIndex, product: widget.product),
-                  ColorPicker(
-                    colorIndex: colorIndex,
-                    colorList: widget.product.productColorList
-                        .map((e) => e.color)
-                        .toList(),
-                    onColorSelected: onColorIndexChanged,
-                  ),
-                  ProductDesc(product: widget.product),
-                ],
+      body: ProductLayout(
+        productInfo: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(vertical: 32),
+          child: Wrap(
+            runSpacing: 32,
+            alignment: WrapAlignment.center,
+            children: [
+              ProductColorPreview(
+                  colorIndex: colorIndex, product: widget.product),
+              ColorPicker(
+                colorIndex: colorIndex,
+                colorList: widget.product.productColorList
+                    .map((e) => e.color)
+                    .toList(),
+                onColorSelected: onColorIndexChanged,
               ),
-            ),
+              ProductDesc(product: widget.product),
+            ],
           ),
-          ProductBottomSheet(
-              count: count,
-              product: widget.product,
-              onCountChanged: onCountChanged,
-              onAddToCartPressed: onAddToCartPressed),
-        ],
+        ),
+        productBottomSheet: ProductBottomSheet(
+            count: count,
+            product: widget.product,
+            onCountChanged: onCountChanged,
+            onAddToCartPressed: onAddToCartPressed),
       ),
     );
   }

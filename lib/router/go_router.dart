@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:house_of_tomorrow/src/view/cart/cart_view.dart';
@@ -5,6 +6,7 @@ import 'package:house_of_tomorrow/src/view/product/product_view.dart';
 import 'package:house_of_tomorrow/src/view/shopping/shopping_view.dart';
 
 import '../src/model/product.dart';
+
 
 final goRouterProvider = Provider<GoRouter>((ref) {
   //watch - 값이 변경될때마다 다시 빌드
@@ -14,8 +16,11 @@ final goRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     initialLocation: '/shoppingView',
     routes: routes,
+    navigatorKey: navigatorKey
   );
 });
+
+  GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
 List<GoRoute> get routes => [
       GoRoute(

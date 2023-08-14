@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:house_of_tomorrow/theme/dark_theme.dart';
 import 'package:house_of_tomorrow/theme/foundation/app_theme.dart';
 import 'package:house_of_tomorrow/theme/light_theme.dart';
+import 'package:house_of_tomorrow/theme/res/layout.dart';
 
 final themeServiceProvider =
     NotifierProvider<ThemeService, AppTheme>(() => ThemeService());
@@ -21,7 +22,6 @@ class ThemeService extends Notifier<AppTheme> {
   void toggleTheme2(String gg) {
     state = state.brightness == Brightness.light ? DarkTheme() : LightTheme();
   }
-
 
   /// Material ThemeData 커스텀
   ThemeData get themeData {
@@ -42,8 +42,11 @@ class ThemeService extends Notifier<AppTheme> {
         ),
       ),
       bottomSheetTheme: const BottomSheetThemeData(
-        backgroundColor: Colors.transparent,
-      )
+          backgroundColor: Colors.transparent,
+          constraints: BoxConstraints(
+            maxWidth: Breakpoints.bottomSheet,
+        ),
+      ),
     );
   }
 }
