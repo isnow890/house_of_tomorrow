@@ -18,9 +18,13 @@ class ThemeService extends Notifier<AppTheme> {
     state = state.brightness == Brightness.light ? DarkTheme() : LightTheme();
   }
 
+  void toggleTheme2(String gg) {
+    state = state.brightness == Brightness.light ? DarkTheme() : LightTheme();
+  }
+
+
   /// Material ThemeData 커스텀
   ThemeData get themeData {
-    print('실행됨?');
     return ThemeData(
       /// Scaffold
       scaffoldBackgroundColor: state.color.surface,
@@ -37,6 +41,9 @@ class ThemeService extends Notifier<AppTheme> {
           color: state.color.text,
         ),
       ),
+      bottomSheetTheme: const BottomSheetThemeData(
+        backgroundColor: Colors.transparent,
+      )
     );
   }
 }
